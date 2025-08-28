@@ -13,7 +13,7 @@ io.on("connection", (socket)=>{
         if(!user.includes(username)){
             user.push(username);
             socket.emit("addedUser",username);
-            socket.emit()
+            socket.broadcast.emit("newMsg",{user:username, msg: "Just joined the chat 🚀🚀🚀"});
         }else{
             socket.emit("userExists", username + " username is taken! Try some other username.")
         }
