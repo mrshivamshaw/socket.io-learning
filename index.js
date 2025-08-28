@@ -9,13 +9,18 @@ app.get("/",(req,res)=>{
 var user = [];
 io.on("connection", (socket)=>{
 
-    socket.on("addUser",(data)=>{
-        if(!user.includes(data)){
-            user.push(data);
-            socket.emit("newUser",{username : data});
+    socket.on("addUser",(username)=>{
+        if(!user.includes(username)){
+            user.push(username);
+            socket.emit("addedUser",username);
+            socket.emit()
         }else{
-            socket.emit("userExists", data + " username is taken! Try some other username.")
+            socket.emit("userExists", username + " username is taken! Try some other username.")
         }
+    })
+
+    socket.on("msg",(data)=>{
+        io.emit("newMsg",data);
     })
 })
 

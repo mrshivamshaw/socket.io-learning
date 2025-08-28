@@ -4,20 +4,32 @@
 <script src="/socket.io/socket.io.js"></script>
 <script>
     var socket = io();
+    var user;
 
     function registerUser(){
         const username = document.getElementById('username').value;
-        console.log("hello");
-        
         socket.emit("addUser",username);
     }
 
-    socket.on("newUser",(data)=>{
-        console.log("user added -> ", data.username);
+    socket.on("addedUser",(username)=>{
+        user = username
+        document.body.innerHTML = '<input type="text" id="message">\
+        <button type="button" name="button" onclick="sendMessage()">Send</button>\
+        <div id="message-container"></div>';
     })
-
+    
     socket.on("userExists",(data)=>{
         document.getElementById("error").innerHTML = data;
+    })
+
+    function sendMessage(){
+        socket.emit("msg", {msg: document.getElementById("message").value, user: user})
+    }
+
+    socket.on("newMsg",(data)=>{
+        if(user){
+            document.getElementById("message-container").innerHTML += '<div><b>' + data.user + '</b>: ' + data.msg + '</div>';
+        }
     })
 </script>
 <body>
