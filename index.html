@@ -4,8 +4,25 @@
 <script src="/socket.io/socket.io.js"></script>
 <script>
     var socket = io();
+
+    function registerUser(){
+        const username = document.getElementById('username').value;
+        console.log("hello");
+        
+        socket.emit("addUser",username);
+    }
+
+    socket.on("newUser",(data)=>{
+        console.log("user added -> ", data.username);
+    })
+
+    socket.on("userExists",(data)=>{
+        document.getElementById("error").innerHTML = data;
+    })
 </script>
 <body>
-    <div>Welcome</div>
+    <div id="error"></div>
+    <input id="username" type="text" placeholder="Enter username">
+    <button type="button" name="button" onclick="registerUser()">Let me chat</button>
 </body>
 </html>
